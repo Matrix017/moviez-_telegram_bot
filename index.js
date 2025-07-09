@@ -1,7 +1,7 @@
-import { Telegraf } from 'telegraf';
-import dotenv from 'dotenv';
-import axios from 'axios';
-import Express from 'express';
+const { Telegraf } = require('telegraf');
+const dotenv = require('dotenv');
+const axios = require('axios');
+const express = require('express');
 
 dotenv.config();
 
