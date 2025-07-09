@@ -1,12 +1,12 @@
 import { Telegraf } from 'telegraf';
 import dotenv from 'dotenv';
 import axios from 'axios';
-import express from 'express';
+import Express from 'express';
 
 dotenv.config();
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
-const app = express();
+const app = Express();
 
 // Dummy web server to keep Render happy
 const PORT = process.env.PORT || 3000;
