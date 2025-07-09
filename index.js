@@ -1,10 +1,21 @@
 import { Telegraf } from 'telegraf';
 import dotenv from 'dotenv';
 import axios from 'axios';
+import express from 'express';
 
 dotenv.config();
 
 const bot = new Telegraf(process.env.BOT_TOKEN);
+const app = express();
+
+// Dummy web server to keep Render happy
+const PORT = process.env.PORT || 3000;
+app.get('/', (_, res) => {
+  res.send('Yo, the bot is vibin 🍿');
+});
+app.listen(PORT, () => {
+  console.log(`🌐 Express server running on port ${PORT}`);
+});
 
 // Markdown escape helper
 function clean(text) {
@@ -28,7 +39,6 @@ bot.command('movie', async (ctx) => {
     let movies = [];
 
     if (userInput) {
-      // Search for a specific movie
       const response = await axios.get(
         `https://api.themoviedb.org/3/search/movie`,
         {
@@ -49,7 +59,6 @@ bot.command('movie', async (ctx) => {
       }
 
     } else {
-      // Get random popular movies
       const randomPage = Math.floor(Math.random() * 50) + 1;
       const response = await axios.get(
         `https://api.themoviedb.org/3/discover/movie`,
@@ -66,7 +75,6 @@ bot.command('movie', async (ctx) => {
       movies = response.data.results.slice(0, 10);
     }
 
-    // Send each movie
     for (const [i, movie] of movies.entries()) {
       const title = clean(movie.title);
       const date = clean(movie.release_date);
@@ -92,7 +100,7 @@ bot.command('movie', async (ctx) => {
   }
 });
 
-// 🚀 Launch
-bot.launch(() => {
-  console.log("🎬 Flavian Bot is live and movie hunting!");
+// 🚀 Launch polling-based bot
+bot.launch().then(() => {
+  console.log("🎬 Flavian Bot is live and movie hunting (polling)!");
 });
